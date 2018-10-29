@@ -1,0 +1,38 @@
+.todo{
+    position: absolute;
+    top: 250px;
+    display: flex;
+    flex-wrap: wrap;
+    width:450px;
+    background-color: white;
+    border: none;
+    border-radius: 8px;
+    -moz-box-shadow:1px 5px 20px #333333; 
+    -webkit-box-shadow:1px 5px 20px #333333; 
+    box-shadow:1px 5px 20px #333333;
+    overflow: hidden;
+}
+
+.input-wrapper{
+    display: inline-block;
+    max-height:50px;
+    width: 100%;
+}
+
+.item-wrapper{
+    width: 100%;
+    min-height: 0px;
+    border: none;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.opt-wrapper{
+    display: inline-block;
+    width: 100%;
+    height: 30px;
+    border: none;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+    background: gainsboro;
+}

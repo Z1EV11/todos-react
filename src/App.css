@@ -1,0 +1,45 @@
+.App {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+  width:100%;
+  height: 100%;
+}
+
+img{
+  display: block;
+  position: absolute;
+  z-index: -10;
+  width:100%;
+  height: 100%;
+  background: url("./assets/background.jpg") no-repeat;
+  background-size: cover;
+  opacity: 0.9;
+  -webkit-filter: blur(2px);
+  -moz-filter: blur(2px);
+  -o-filter: blur(2px);
+  -ms-filter: blur(2px);
+  filter: blur(2px);
+}
+
+.app-header{
+  position: absolute;
+  top: 100px;
+  width: 100%;
+  display: flex;
+  color: white;
+  justify-content: center;
+  flex: 0 1 auto;
+}
+
+.app-footer{
+  position: absolute;
+  bottom: 80px;
+  display: flex;
+  width: 100%;
+  color: white;
+  justify-content: center;
+  align-self: flex-end;
+  flex: 0 1 auto;
+}
