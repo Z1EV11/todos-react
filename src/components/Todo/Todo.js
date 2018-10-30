@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import './Todo.css';
+import { observer } from 'mobx-react';
 
+import './Todo.css';
 import Type from "../Type/Type.js"
 import Option from "../Option/Option.js"
 import Item from "../Item/Item.js"
+import DBC from "../../dbc/DBConnection.js"
 
+@observer
 class Todo extends Component {
   constructor(props){
     super(props);
@@ -22,6 +25,17 @@ class Todo extends Component {
     this.filterItem = this.filterItem.bind(this);
   }
 
+  componentDidMount() {
+    const idb = new DBC('select');
+    setTimeout(() => {
+      let info = idb.getItems();
+      this.setState({
+        info,
+        left: info.length
+      });
+    }, 1000);
+  }
+
   typeIn(e) {
     e.stopPropagation();
     if(e.keyCode === 13) {
@@ -32,13 +46,16 @@ class Todo extends Component {
         this.setState({msg: "立这么多flag等着被打脸？？？"});
         return;
       }
+      let item = {
+        id: Math.random()*100, 
+        content: value,
+        finished: false
+      };
       this.setState({
-        info: [{
-          id: Math.random()*100, 
-          content: value,
-          finished: false
-        }].concat(this.state.info),
+        info: [item].concat(this.state.info),
         left: ++left
+      }, () => {
+        new DBC('insert', item);
       });
     }
   }
@@ -96,6 +113,7 @@ class Todo extends Component {
   filterItem(type) {
     var items = [];
     var that = this;
+    console.log('type', type);
     switch(type){
       case "Active":
         items = that.state.info.map(function(item, index){
@@ -111,8 +129,14 @@ class Todo extends Component {
           }
         });
         break;
+      case "All":
+        console.log('switch', that.state.info);
+        items = that.state.info.map((item, index) => {
+          console.log('switch', item);
+          return <Item key={index} info={item} changeFinished={that.changeFinished} delItem={that.delItem} />
+        });
+        break;
       default:
-        items = that.state.info.map((item, index) => <Item key={index} info={item} changeFinished={that.changeFinished} delItem={that.delItem} />);
         break;
     }
     return items;
@@ -124,7 +148,7 @@ class Todo extends Component {
       window.alert(this.state.msg);
       this.setState({msg: ""});
     }
-    console.log(this.state.left+"|"+this.state.type+"|"+JSON.stringify(this.state.info));
+    console.log('render()', this.state.info);
 
     return (
       <div className="todo">
