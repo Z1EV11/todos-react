@@ -45,12 +45,27 @@ export default class DBC {
         objectStore.put(data);
     }
 
-    delete(db, data) {
-
+    delete(db, ids) {
+        const transaction = db.transaction(['items'], 'readwrite');
+        let objectStore = transaction.objectStore('items');
+        for(let i=0; i<ids.length; i++) {
+            objectStore.delete(ids[i]);
+        }
     }
 
-    update(db, data) {
-
+    update(db, id) {
+        const transaction = db.transaction(['items'], 'readwrite');
+        let objectStore = transaction.objectStore('items');
+        let request = objectStore.get(id);
+        request.onsuccess = (e) => {
+            const item = request.result;
+            if(item) {
+                objectStore.put({
+                    ...item,
+                    finished: !item.finished
+                });
+            }
+        };
     }
 
     select(db) {

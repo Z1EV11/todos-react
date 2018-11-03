@@ -1,22 +1,31 @@
 import React, { Component } from 'react';
-import { observer } from 'mobx-react';
+import { observer, inject } from 'mobx-react';
 
 import './Todo.css';
-import Type from "../Type/Type.js"
-import Option from "../Option/Option.js"
-import Item from "../Item/Item.js"
-import DBC from "../../dbc/DBConnection.js"
+import Type from "../Type/Type.js";
+import Option from "../Option/Option.js";
+import Item from "../Item/Item.js";
+import DBC from "../../dbc/DBConnection.js";
+import { observable } from 'mobx';
 
+@inject("store")
 @observer
 class Todo extends Component {
+
+  @observable info;
+  @observable left;
+  @observable type = 'All';
+  @observable msg = '';
+
   constructor(props){
     super(props);
     this.state = {
       info: [],
       left: 0,
-      type: "All",
-      msg: ""
-    };
+      type: 'All',
+      msg: ''
+    }
+    console.log('props', props);
     this.typeIn = this.typeIn.bind(this);
     this.changeFinished = this.changeFinished.bind(this);
     this.changeType = this.changeType.bind(this);
@@ -33,7 +42,7 @@ class Todo extends Component {
         info,
         left: info.length
       });
-    }, 1000);
+    }, 500);
   }
 
   typeIn(e) {
@@ -74,7 +83,9 @@ class Todo extends Component {
         arr[i].finished = !arr[i].finished;
       }
     }
-    this.setState({info: arr, left: l});
+    this.setState({info: arr, left: l}, () => {
+      new DBC('update', id);
+    });
   }
 
   changeType(e) {
@@ -90,12 +101,17 @@ class Todo extends Component {
   clearCompleted(e) {
     let info = [].concat(this.state.info);
     let arr = [];
+    let ids = [];
     for(let i in info) {
       if(!info[i].finished) {
         arr.push(info[i]);
+      } else {
+        ids.push(info[i].id);
       }
     }
-    this.setState({info: arr});
+    this.setState({info: arr}, () => {
+      new DBC('delete', ids);
+    });
   }
 
   delItem(id) {
@@ -107,7 +123,9 @@ class Todo extends Component {
         arr.push(info[i]);
       }
     }
-    this.setState({info: arr, left: --l});
+    this.setState({info: arr, left: --l}, () => {
+      new DBC('delete', [id]);
+    });
   }
 
   filterItem(type) {

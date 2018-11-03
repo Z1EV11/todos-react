@@ -9,7 +9,7 @@ class App extends Component {
       <div className="App">
         <img className="blur" alt="background" />
         <header className="app-header"><h1>JUST DO IT.</h1></header>
-        <Todo/>
+        <Todo {...this.props}/>
         <footer className="app-footer"><span>Designed by Frank</span></footer>
       </div>
     );
