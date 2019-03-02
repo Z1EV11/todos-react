@@ -1,2 +1,2 @@
 # todos-react
-indexDB + 
+indexDB + react
