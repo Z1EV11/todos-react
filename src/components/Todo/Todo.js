@@ -1,21 +1,13 @@
 import React, { Component } from 'react';
-import { observer, inject } from 'mobx-react';
 
 import './Todo.css';
 import Type from "../Type/Type.js";
 import Option from "../Option/Option.js";
 import Item from "../Item/Item.js";
 import DBC from "../../dbc/DBConnection.js";
-import { observable } from 'mobx';
 
-@inject("store")
-@observer
+
 class Todo extends Component {
-
-  @observable info;
-  @observable left;
-  @observable type = 'All';
-  @observable msg = '';
 
   constructor(props){
     super(props);
